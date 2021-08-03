@@ -3,7 +3,6 @@ import NavBar from './components/layout/NavBar';
 import Users from './components/users/Users';
 import './App.css';
 import axios from 'axios';
-const baseUrl = 'https://api.github.com/users';
 
 class App extends Component {
     state = {
@@ -12,6 +11,7 @@ class App extends Component {
     };
 
     async componentDidMount() {
+        const baseUrl = `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
         this.setState({ isLoading: true });
         const response = await axios.get(baseUrl).then(response => response.data);
         this.setState({ users: response, isLoading: false });
