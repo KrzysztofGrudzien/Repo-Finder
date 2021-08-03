@@ -12,17 +12,17 @@ class App extends Component {
     };
 
     async componentDidMount() {
-        if (!this.state.isLoading) {
-            const response = await axios.get(baseUrl).then(response => response.data);
-            this.setState({ users: response, isLoading: false });
-        }
+        this.setState({ isLoading: true });
+        const response = await axios.get(baseUrl).then(response => response.data);
+        this.setState({ users: response, isLoading: false });
     }
 
     render() {
+        const { users, isLoading } = this.state;
         return (
             <div className='app'>
                 <NavBar />
-                <Users users={this.state.users} isLoading={this.state.isLoading} />
+                <Users users={users} isLoading={isLoading} />
             </div>
         );
     }
