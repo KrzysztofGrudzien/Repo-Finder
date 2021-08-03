@@ -1,23 +1,19 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class NavBar extends Component {
-    static defaultProps = {
-        title: 'Repo finder',
-    };
+const NavBar = ({ title }) => {
+    return (
+        <nav>
+            <h1>{title}</h1>
+        </nav>
+    );
+};
 
-    static propTypes = {
-        title: PropTypes.string.isRequired,
-    };
+NavBar.defaultProps = {
+    title: 'Repo finder',
+};
 
-    render() {
-        const { title } = this.props;
-        return (
-            <nav>
-                <h1>{title}</h1>
-            </nav>
-        );
-    }
-}
+NavBar.propTypes = {
+    title: PropTypes.string.isRequired,
+};
 
 export default NavBar;
