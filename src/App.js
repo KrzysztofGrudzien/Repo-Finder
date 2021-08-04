@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from './components/layout/NavBar';
 import Users from './components/users/Users';
+import UserProfile from './components/users/UserProfile';
 import SearchUser from './components/layout/SearchUser';
 import './App.css';
 import axios from 'axios';
@@ -11,6 +12,7 @@ import Contact from './pages/Contact';
 class App extends Component {
     state = {
         users: [],
+        user: {},
         isLoading: false,
     };
 
@@ -21,12 +23,19 @@ class App extends Component {
         this.setState({ users: response, isLoading: false });
     };
 
+    handleGetUserProfile = async endPoint => {
+        const baseUrl = `https://api.github.com/users/${endPoint}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+        this.setState({ isLoading: true });
+        const response = await axios.get(baseUrl).then(response => response.data);
+        this.setState({ user: response, isLoading: false });
+    };
+
     handleClearUsers = () => {
         this.setState({ users: [] });
     };
 
     render() {
-        const { users, isLoading } = this.state;
+        const { users, user, isLoading } = this.state;
         return (
             <Router>
                 <div className='app'>
@@ -46,6 +55,18 @@ class App extends Component {
                         <Route path='/contact' exact>
                             <Contact />
                         </Route>
+                        <Route
+                            path='/user/:login'
+                            exact
+                            render={props => (
+                                <UserProfile
+                                    {...props}
+                                    getUserProfile={this.handleGetUserProfile}
+                                    user={user}
+                                    isloading={isLoading}
+                                />
+                            )}
+                        />
                     </Switch>
                 </div>
             </Router>
