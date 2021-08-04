@@ -4,14 +4,22 @@ import PropTypes from 'prop-types';
 class SearchUser extends Component {
     state = {
         text: '',
+        alertMsg: null,
     };
 
     handleSendRequest = e => {
+        e.preventDefault();
         const { text } = this.state;
         const { searchUser } = this.props;
-        e.preventDefault();
-        searchUser(text);
-        this.setState({ text: '' });
+
+        if (text === '') {
+            this.setState({ alertMsg: 'Please enter a text' });
+        } else {
+            searchUser(text);
+            this.setState({ text: '' });
+        }
+
+        setTimeout(() => this.setState({ alertMsg: null }), 3000);
     };
 
     handleSearchUser = e => {
@@ -24,10 +32,11 @@ class SearchUser extends Component {
     };
 
     render() {
-        const { text } = this.state;
+        const { text, alertMsg } = this.state;
         const usersAmount = this.props.usersAmount.length;
         return (
             <div>
+                {alertMsg && <div>{alertMsg}</div>}
                 <form onSubmit={this.handleSendRequest}>
                     <input
                         type='text'
@@ -47,7 +56,6 @@ class SearchUser extends Component {
 SearchUser.propTypes = {
     searchUser: PropTypes.func.isRequired,
     clearUsers: PropTypes.func.isRequired,
-    users: PropTypes.array.isRequired,
 };
 
 export default SearchUser;
