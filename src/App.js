@@ -11,11 +11,15 @@ class App extends Component {
         isLoading: false,
     };
 
-    searchUser = async endPoint => {
+    handleSearchUser = async endPoint => {
         const baseUrl = `https://api.github.com/search/users?q=${endPoint}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
         this.setState({ isLoading: true });
         const response = await axios.get(baseUrl).then(response => response.data.items);
         this.setState({ users: response, isLoading: false });
+    };
+
+    handleClearUsers = () => {
+        this.setState({ users: [] });
     };
 
     render() {
@@ -23,7 +27,7 @@ class App extends Component {
         return (
             <div className='app'>
                 <NavBar />
-                <SearchUser searchUser={this.searchUser} />
+                <SearchUser searchUser={this.handleSearchUser} clearUsers={this.handleClearUsers} usersAmount={users} />
                 <Users users={users} isLoading={isLoading} />
             </div>
         );

@@ -18,8 +18,14 @@ class SearchUser extends Component {
         this.setState({ [e.target.name]: e.target.value });
     };
 
+    handleClearSearch = e => {
+        const { clearUsers } = this.props;
+        clearUsers();
+    };
+
     render() {
         const { text } = this.state;
+        const usersAmount = this.props.usersAmount.length;
         return (
             <div>
                 <form onSubmit={this.handleSendRequest}>
@@ -32,6 +38,7 @@ class SearchUser extends Component {
                     />
                     <button type='submit'>Search</button>
                 </form>
+                {usersAmount > 0 && <button onClick={this.handleClearSearch}>Clear</button>}
             </div>
         );
     }
@@ -39,6 +46,8 @@ class SearchUser extends Component {
 
 SearchUser.propTypes = {
     searchUser: PropTypes.func.isRequired,
+    clearUsers: PropTypes.func.isRequired,
+    users: PropTypes.array.isRequired,
 };
 
 export default SearchUser;
