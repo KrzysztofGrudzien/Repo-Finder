@@ -1,57 +1,43 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-class SearchUser extends Component {
-    state = {
-        text: '',
-        alertMsg: null,
-    };
+const SearchUser = ({ searchUser, clearUsers, usersAmount }) => {
+    const [text, setText] = useState('');
+    const [textAlert, setTextAlert] = useState(null);
 
-    handleSendRequest = e => {
+    const handleSendRequest = e => {
         e.preventDefault();
-        const { text } = this.state;
-        const { searchUser } = this.props;
 
         if (text === '') {
-            this.setState({ alertMsg: 'Please enter a text' });
+            setTextAlert('Please enter a text');
         } else {
             searchUser(text);
-            this.setState({ text: '' });
+            setText('');
         }
-
-        setTimeout(() => this.setState({ alertMsg: null }), 3000);
+        setTimeout(() => setTextAlert(null), 3000);
     };
 
-    handleSearchUser = e => {
-        this.setState({ [e.target.name]: e.target.value });
+    const handleSearchUser = e => {
+        setText(e.target.value);
     };
 
-    handleClearSearch = e => {
-        const { clearUsers } = this.props;
+    const handleClearSearch = e => {
         clearUsers();
     };
 
-    render() {
-        const { text, alertMsg } = this.state;
-        const usersAmount = this.props.usersAmount.length;
-        return (
-            <div>
-                {alertMsg && <div>{alertMsg}</div>}
-                <form onSubmit={this.handleSendRequest}>
-                    <input
-                        type='text'
-                        name='text'
-                        value={text}
-                        placeholder='Search user...'
-                        onChange={this.handleSearchUser}
-                    />
-                    <button type='submit'>Search</button>
-                </form>
-                {usersAmount > 0 && <button onClick={this.handleClearSearch}>Clear</button>}
-            </div>
-        );
-    }
-}
+    const usersAmounts = usersAmount.length;
+
+    return (
+        <div>
+            {textAlert && <div>{textAlert}</div>}
+            <form onSubmit={handleSendRequest}>
+                <input type='text' name='text' value={text} placeholder='Search user...' onChange={handleSearchUser} />
+                <button type='submit'>Search</button>
+            </form>
+            {usersAmounts > 0 && <button onClick={handleClearSearch}>Clear</button>}
+        </div>
+    );
+};
 
 SearchUser.propTypes = {
     searchUser: PropTypes.func.isRequired,
