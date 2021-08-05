@@ -42,6 +42,7 @@ const SearchUser = ({ searchUser, clearUsers, usersAmount }) => {
 SearchUser.propTypes = {
     searchUser: PropTypes.func.isRequired,
     clearUsers: PropTypes.func.isRequired,
+    usersAmount: PropTypes.array.isRequired,
 };
 
 export default SearchUser;

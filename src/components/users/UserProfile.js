@@ -1,39 +1,37 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import Spinner from '../layout/Spinner';
 import PropTypes from 'prop-types';
 
-class UserProfile extends Component {
-    componentDidMount() {
-        this.props.getUserProfile(this.props.match.params.login);
-        this.props.getUserRepos(this.props.match.params.login);
-    }
+const UserProfile = ({ getUserProfile, getUserRepos, isLoading, repos, user, match }) => {
+    useEffect(() => {
+        getUserProfile(match.params.login);
+        getUserRepos(match.params.login);
+        // eslint-disable-next-line
+    }, []);
 
-    render() {
-        const { login, avatar_url, location } = this.props.user;
-        const { isLoading, repos } = this.props;
+    const { login, avatar_url, location } = user;
 
-        if (isLoading) return <Spinner />;
+    if (isLoading) return <Spinner />;
 
-        return (
-            <div>
-                <ul>
-                    <li>{login}</li>
+    return (
+        <div>
+            <ul>
+                <li>{login}</li>
+                <li>
+                    <img src={avatar_url} alt={login} />
+                </li>
+                <li>{location}</li>
+            </ul>
+            <ul>
+                {repos.map(({ name, forks, watchers }) => (
                     <li>
-                        <img src={avatar_url} alt={login} />
+                        project name: {name} forks:{forks} stars: {watchers}
                     </li>
-                    <li>{location}</li>
-                </ul>
-                <ul>
-                    {repos.map(({ name, forks, watchers }) => (
-                        <li>
-                            project name: {name} forks:{forks} stars: {watchers}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        );
-    }
-}
+                ))}
+            </ul>
+        </div>
+    );
+};
 
 UserProfile.propTypes = {
     isLoading: PropTypes.bool.isRequired,
