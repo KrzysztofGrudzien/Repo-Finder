@@ -3,7 +3,7 @@ import NavBar from './components/layout/NavBar';
 import Users from './components/users/Users';
 import UserProfile from './components/users/UserProfile';
 import SearchUser from './components/layout/SearchUser';
-import './App.css';
+import './App.scss';
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import About from './pages/About';
